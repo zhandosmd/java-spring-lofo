@@ -12,10 +12,11 @@
     <div th:each="el : ${post}" class="alert alert-info mt-2">
         <h1 th:text="${el.title}"></h1>
         <p th:text="${el.description}"></p>
+<!--        <img th:src="/@{${user.photosImagePath}}" />-->
         <p><b>Views: </b><span th:text="${el.views}"></span></p>
-        <a th:href="'/blog/' + ${el.id} + '/edit'" class="btn btn-warning">Редактировать</a><br><br>
+        <a th:href="'/blog/' + ${el.id} + '/edit'" class="btn btn-info">Редактировать</a><br><br>
         <form th:action="'/blog/' + ${el.id} + '/remove'" method="post">
-            <button class="btn btn-warning" type="submit">Удалить</button>
+            <button class="btn btn-danger" type="submit">Удалить</button>
         </form>
     </div>
 </div>

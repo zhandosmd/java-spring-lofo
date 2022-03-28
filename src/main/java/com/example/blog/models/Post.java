@@ -3,10 +3,7 @@ package com.example.blog.models;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 @Getter
@@ -17,12 +14,20 @@ public class Post { // model
     private Long id;
     private String title, place, description;
     private int views;
+    @Column(nullable = true, length = 64)
+    private String image;
 
     public Post() {}
-
     public Post(String title, String place, String description) {
         this.title = title;
         this.place = place;
         this.description = description;
+    }
+
+    @Transient
+    public String getPhotosImagePath() {
+        if (image == null || id == null) return null;
+
+        return "/user-photos/" + id + "/" + image;
     }
 }

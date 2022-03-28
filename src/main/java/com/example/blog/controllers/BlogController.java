@@ -1,12 +1,16 @@
 package com.example.blog.controllers;
 
+import com.example.blog.FileUploadUtil;
 import com.example.blog.models.Post;
 import com.example.blog.repo.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -20,7 +24,7 @@ public class BlogController {
     public String blogMain(Model model){
         Iterable<Post> posts = postRepository.findAll();
         model.addAttribute("posts", posts);
-        return "blog-main";
+            return "blog-main";
     }
 
     @GetMapping("/blog/add")
@@ -33,10 +37,14 @@ public class BlogController {
         @RequestParam String title,
         @RequestParam String anons,
         @RequestParam String full_text,
-        Model model)
-    {
+//        @RequestParam MultipartFile image,
+        Model model) throws IOException {
+//        String fileName = StringUtils.cleanPath(image.getOriginalFilename());
         Post post = new Post(title, anons, full_text);
-        postRepository.save(post);
+        Post postSaved = postRepository.save(post);
+
+//        String uploadDir = "user-photos/" + postSaved.getId();
+//        FileUploadUtil.saveFile(uploadDir, fileName, image);
         return "redirect:/blog";
     }
 
