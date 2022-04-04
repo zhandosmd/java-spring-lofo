@@ -1,5 +1,11 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
+<script>
+    function changeType(value){
+        location.href = "http://localhost:8080/blog?type="+value;
+    }
+</script>
+
 <head>
     <title>Блог сайта</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -10,10 +16,24 @@
 
 <div class="container mt-5">
     <h1>Lost & Found Records</h1>
+
+    <select name="type" id="type" onchange="changeType(this.value)">
+<!--        <option value="All">All</option>-->
+<!--        <option value="Gadget">Gadget</option>-->
+<!--        <option value="Document">Document</option>-->
+<!--        <option value="Clothes">Clothes</option>-->
+<!--        <option value="ID Card">ID Card</option>-->
+<!--        <option value="Credit Card">Credit Card</option>-->
+<!--        <option th:each="option : ${types}" th:value="${option}" th:text="${option}" th:selected="${${selectedType}==option}"></option>-->
+
+        <option th:each="option : ${types}" th:value="${option}" th:text="${option}" th:selected="${selectedType==option}"></option>
+    </select><br>
+<!--    <a th:href="'/blog/'" class="btn btn-warning">Search</a>-->
+
     <div th:each="el : ${posts}" class="alert alert-info mt-2">
         <h3 th:text="${el.title}"></h3>
         <p th:text="${el.place}"></p>
-        <a th:href="'/blog/'+${el.id}" class="btn btn-warning">Детальнее</a>
+        <a th:href="'/blog/'+${el.id}" class="btn btn-warning">More details</a>
     </div>
 </div>
 

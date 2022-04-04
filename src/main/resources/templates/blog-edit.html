@@ -13,6 +13,15 @@
     <div th:each="el : ${post}">
         <form  method="post">
             <input type="text" th:value="${el.title}" name="title" placeholder="Title of record" class="form-control"><br>
+            <label for="type" class="mb-2">Choose a type:</label>
+            <select th:value="${el.type}" name="type" id="type" class="form-select">
+                <option value="Gadget">Gadget</option>
+                <option value="Document">Document</option>
+                <option value="Clothes">Clothes</option>
+                <option value="ID Card">ID Card</option>
+                <option value="Credit Card">Credit Card</option>
+                <option value="Other">Other</option>
+            </select><br>
             <input type="text" th:value="${el.place}" name="place" placeholder="Place" class="form-control"><br>
             <textarea name="description" th:text="${el.description}" placeholder="Description about record" class="form-control" /><br>
             <button type="submit" class="btn btn-success">Обновить</button>

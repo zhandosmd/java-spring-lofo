@@ -12,9 +12,17 @@
     <h1>Adding records</h1>
     <form action="/blog/add" method="post">
         <input type="text" name="title" placeholder="Title of record" class="form-control"><br>
-        <input type="text" name="anons" placeholder="Place" class="form-control"><br>
+
+        <label for="type" class="mb-2">Choose a type:</label>
+        <select name="type" id="type" onchange="changeType(this.value)">
+            <option th:each="option : ${types}" th:value="${option}" th:text="${option}"></option>
+        </select><br>
+
+        <input type="text" name="anons" placeholder="Place" class="form-control mt-2"><br>
+
         <textarea name="full_text" placeholder="Description about record" class="form-control"> </textarea><br>
-        <label>Photos: </label>
+
+<!--        <label>Photos: </label>-->
 <!--        <input type="file" name="image" accept="image/png, image/jpeg" />-->
         <button type="submit" class="btn btn-success">Добавить статью</button>
     </form>

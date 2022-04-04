@@ -1,34 +1,48 @@
 package com.example.blog.controllers;
 
-import com.example.blog.FileUploadUtil;
+import com.example.blog.configurations.LocalData;
 import com.example.blog.models.Post;
 import com.example.blog.repo.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class BlogController {
 
+
     @Autowired
     private PostRepository postRepository;
 
     @GetMapping("/blog")
-    public String blogMain(Model model){
+    public String blogMain(Model model, @RequestParam(required = false, defaultValue = "All", value="type") String type){
         Iterable<Post> posts = postRepository.findAll();
         model.addAttribute("posts", posts);
-            return "blog-main";
+        if(!type.equals("All")) {
+            List<Post> foundPosts = new ArrayList<Post>();
+            for(Post post: posts){
+                if(post.getType().equals(type)){
+                    foundPosts.add(post);
+                }
+            }
+            Iterable<Post> iterable = foundPosts;
+            model.addAttribute("posts", iterable);
+        }
+        List<String> types = new LocalData().types;
+        model.addAttribute("types", types);
+        model.addAttribute("selectedType", type);
+        return "blog-main";
     }
 
     @GetMapping("/blog/add")
     public String blogAdd(Model model){
+        List<String> types = new LocalData().typesToAdd;
+        model.addAttribute("types", types);
         return "blog-add";
     }
 
@@ -37,14 +51,11 @@ public class BlogController {
         @RequestParam String title,
         @RequestParam String anons,
         @RequestParam String full_text,
-//        @RequestParam MultipartFile image,
-        Model model) throws IOException {
-//        String fileName = StringUtils.cleanPath(image.getOriginalFilename());
-        Post post = new Post(title, anons, full_text);
+        @RequestParam String type,
+        Model model) {
+        System.out.println(type);
+        Post post = new Post(title, anons, full_text, type);
         Post postSaved = postRepository.save(post);
-
-//        String uploadDir = "user-photos/" + postSaved.getId();
-//        FileUploadUtil.saveFile(uploadDir, fileName, image);
         return "redirect:/blog";
     }
 
@@ -78,12 +89,14 @@ public class BlogController {
         @RequestParam String title,
         @RequestParam String place,
         @RequestParam String description,
+        @RequestParam String type,
         Model model)
     {
         Post post = postRepository.findById(id).orElseThrow();
         post.setTitle(title);
         post.setPlace(place);
         post.setDescription(description);
+        post.setType(type);
         postRepository.save(post);
 
         return "redirect:/blog";
