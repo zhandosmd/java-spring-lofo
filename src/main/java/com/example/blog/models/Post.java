@@ -16,7 +16,7 @@ public class Post { // model
     private String type;
     private int views;
     @Column(nullable = true, length = 64)
-    private String image;
+    private String photos;
 
     public Post() {}
     public Post(String title, String place, String description, String type) {
@@ -34,8 +34,7 @@ public class Post { // model
 
     @Transient
     public String getPhotosImagePath() {
-        if (image == null || id == null) return null;
-
-        return "/user-photos/" + id + "/" + image;
+        if (photos == null || id == null) return null;
+        return "/user-photos/" + id + "/" + photos;
     }
 }

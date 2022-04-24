@@ -1,11 +1,16 @@
 package com.example.blog.controllers;
 
+import com.example.blog.configurations.FileUploadUtil;
 import com.example.blog.models.Post;
 import com.example.blog.repo.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -28,6 +33,26 @@ public class BlogRestController {
             @RequestParam("description") String description) {
         Post post = new Post(title, place, description);
         postRepository.save(post);
+
+        return "succesfully added";
+    }
+
+    @PostMapping("/api/blog/add/withimage")
+    public String saveUser(
+            @RequestParam String title,
+            @RequestParam String anons,
+            @RequestParam String full_text,
+            @RequestParam String type,
+            @RequestParam("image") MultipartFile multipartFile
+    ) throws IOException {
+        Post post = new Post(title, anons, full_text, type);
+
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        post.setPhotos(fileName);
+
+        Post savedPost = postRepository.save(post);
+        String uploadDir = "user-photos/" + savedPost.getId();
+        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
 
         return "succesfully added";
     }

@@ -1,20 +1,24 @@
 package com.example.blog.controllers;
 
+import com.example.blog.configurations.FileUploadUtil;
 import com.example.blog.configurations.LocalData;
 import com.example.blog.models.Post;
 import com.example.blog.repo.PostRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 @Controller
 public class BlogController {
-
 
     @Autowired
     private PostRepository postRepository;
@@ -47,17 +51,36 @@ public class BlogController {
     }
 
     @PostMapping("/blog/add")
-    public String blogPostAdd(
-        @RequestParam String title,
-        @RequestParam String anons,
-        @RequestParam String full_text,
-        @RequestParam String type,
-        Model model) {
-        System.out.println(type);
+    public RedirectView saveUser(
+            @RequestParam String title,
+            @RequestParam String anons,
+            @RequestParam String full_text,
+            @RequestParam String type,
+            @RequestParam("image") MultipartFile multipartFile
+    ) throws IOException {
         Post post = new Post(title, anons, full_text, type);
-        Post postSaved = postRepository.save(post);
-        return "redirect:/blog";
+
+        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        post.setPhotos(fileName);
+
+        Post savedPost = postRepository.save(post);
+        String uploadDir = "user-photos/" + savedPost.getId();
+        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+        return new RedirectView("/blog", true);
     }
+
+//    @PostMapping("/blog/add")
+//    public String blogPostAdd(
+//        @RequestParam String title,
+//        @RequestParam String anons,
+//        @RequestParam String full_text,
+//        @RequestParam String type,
+//        Model model) {
+//        System.out.println(type);
+//        Post post = new Post(title, anons, full_text, type);
+//        Post postSaved = postRepository.save(post);
+//        return "redirect:/blog";
+//    }
 
     @GetMapping("/blog/{id}")
     public String blogByID(@PathVariable(value = "id") long id, Model model){

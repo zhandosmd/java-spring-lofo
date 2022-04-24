@@ -14,7 +14,7 @@
         <p th:text="'Type: ' + ${el.type}"></p>
         <p th:text="'Place: ' + ${el.place}"></p>
         <p th:text="'Description: ' + ${el.description}"></p>
-<!--        <img th:src="/@{${user.photosImagePath}}" />-->
+        <img th:src="${el.getPhotosImagePath}" width="500" />
         <p><b>Views: </b><span th:text="${el.views}"></span></p>
         <a th:href="'/blog/' + ${el.id} + '/edit'" class="btn btn-info">Редактировать</a><br><br>
         <form th:action="'/blog/' + ${el.id} + '/remove'" method="post">
