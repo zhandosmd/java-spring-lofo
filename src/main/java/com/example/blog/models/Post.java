@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,6 +18,8 @@ public class Post { // model
     private int views;
     @Column(nullable = true, length = 64)
     private String photos;
+    @ElementCollection
+    private List<String> comments;
 
     public Post() {}
     public Post(String title, String place, String description, String type) {

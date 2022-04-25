@@ -69,18 +69,6 @@ public class BlogController {
         return new RedirectView("/blog", true);
     }
 
-//    @PostMapping("/blog/add")
-//    public String blogPostAdd(
-//        @RequestParam String title,
-//        @RequestParam String anons,
-//        @RequestParam String full_text,
-//        @RequestParam String type,
-//        Model model) {
-//        System.out.println(type);
-//        Post post = new Post(title, anons, full_text, type);
-//        Post postSaved = postRepository.save(post);
-//        return "redirect:/blog";
-//    }
 
     @GetMapping("/blog/{id}")
     public String blogByID(@PathVariable(value = "id") long id, Model model){
@@ -123,6 +111,38 @@ public class BlogController {
         postRepository.save(post);
 
         return "redirect:/blog";
+    }
+
+    @PostMapping("/blog/{id}/comment")
+    public String blogPostComment(
+            @PathVariable(value = "id") long id,
+            @RequestParam String comment,
+            Model model)
+    {
+        Post post = postRepository.findById(id).orElseThrow();
+        List<String> comments = post.getComments();
+        comments.add(comment);
+        post.setComments(comments);
+        postRepository.save(post);
+
+        return "redirect:/blog/{id}";
+    }
+
+    @PostMapping("/blog/{id}/{comment}/delete")
+    public String blogPostCommentDelete(
+            @PathVariable(value = "id") long id,
+            @RequestParam String comment,
+            Model model)
+    {
+        Post post = postRepository.findById(id).orElseThrow();
+        List<String> comments = post.getComments();
+        System.out.println(comment);
+        System.out.println(comments);
+        comments.remove(comment);
+        post.setComments(comments);
+        postRepository.save(post);
+
+        return "redirect:/blog/{id}";
     }
 
     @PostMapping("/blog/{id}/remove")

@@ -19,6 +19,20 @@
         <a th:href="'/blog/' + ${el.id} + '/edit'" class="btn btn-info">Редактировать</a><br><br>
         <form th:action="'/blog/' + ${el.id} + '/remove'" method="post">
             <button class="btn btn-danger" type="submit">Удалить</button>
+        </form><br><br>
+
+        <h3>Comments: </h3>
+        <div th:each="comment : ${el.comments}" class="bg-light text-dark p-3 mb-2">
+            <form th:action="'/blog/' + ${el.id} + '/comment/delete'" method="post">
+                <p th:text="${comment}"></p>
+                <input type="hidden" name="comment" th:value="${comment}">
+                <button type="submit" class="btn btn-danger">Delete</button>
+            </form>
+        </div>
+
+        <form th:action="'/blog/' + ${el.id} + '/comment'" method="post">
+            <input type="text" name="comment" placeholder="Comment" class="form-control"><br>
+            <button type="submit" class="btn btn-success" inline="true">Leave comment</button>
         </form>
     </div>
 </div>
