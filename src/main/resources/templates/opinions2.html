@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoFo.SDU</title>
+    <link rel="stylesheet" href="/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/opinions.css">
+</head>
+<body>
+        <header th:insert="blocks/header2 :: header2"></header>
+
+        <section class="opinions-list">
+            <div class="container">
+                <h4 class="opinion-text" >ABOUT US</h4>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="row row-margin">
+
+                            <div class="col-sm-3">
+                                <div class="opinion-article">
+                                    <a class="article-item" href="">
+                                       <div class="item-top">
+                                           <div class="item-img">
+                                               <img src="/img/author 2.png" alt="">
+                                           </div>
+                                           <div class="item-header">
+                                               <p class="header-name">Andrey Bogdanchikov, MA, PhD</p>
+                                               <p class="header-specialty">Vice-Rector for Academic Affairs</p>
+                                           </div>
+                                        
+                                       </div>
+                                       <div class="item-text">
+                                            <p class="text-heading">Very nice site design and functionality is not bad either</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <div class="opinion-article">
+                                    <a class="article-item" href="">
+                                       <div class="item-top">
+                                           <div class="item-img">
+                                               <img src="/img/author 1.png" alt="">
+                                           </div>
+                                           <div class="item-header">
+                                               <p class="header-name">Davronzhon Gaipov, MA, PhD</p>
+                                               <p class="header-specialty">Rector</p>
+                                           </div>
+                                        
+                                       </div>
+                                       <div class="item-text">
+                                            <p class="text-heading">Very good site, helps many students of our university to find their lost things</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div> 
+                </div>
+            </div>
+        </section>
+
+        <footer th:insert="blocks/footer2 :: footer2"></footer>
+
+        <script src="/js/main.js"></script>
+</body>
+</html>

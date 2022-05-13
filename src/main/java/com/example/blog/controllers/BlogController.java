@@ -23,8 +23,8 @@ public class BlogController {
     @Autowired
     private PostRepository postRepository;
 
-    @GetMapping("/blog")
-    public String blogMain(Model model, @RequestParam(required = false, defaultValue = "All", value="type") String type){
+    @GetMapping("/allnews")
+    public String allnews(Model model, @RequestParam(required = false, defaultValue = "All", value="type") String type){
         Iterable<Post> posts = postRepository.findAll();
         model.addAttribute("posts", posts);
         if(!type.equals("All")) {
@@ -40,7 +40,7 @@ public class BlogController {
         List<String> types = new LocalData().types;
         model.addAttribute("types", types);
         model.addAttribute("selectedType", type);
-        return "blog-main";
+        return "allnews2";
     }
 
     @GetMapping("/blog/add")
@@ -66,7 +66,7 @@ public class BlogController {
         Post savedPost = postRepository.save(post);
         String uploadDir = "user-photos/" + savedPost.getId();
         FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-        return new RedirectView("/blog", true);
+        return new RedirectView("/allnews", true);
     }
 
 

@@ -18,18 +18,45 @@ public class AuthRestController {
     @PostMapping("/api/registration")
     public String addUser(
         @RequestParam String username,
-        @RequestParam String password){
+        @RequestParam String password,
+        @RequestParam(required=false) String name,
+        @RequestParam(required=false) String surname,
+        @RequestParam(required=false) String faculty,
+        @RequestParam(required=false) String email,
+        @RequestParam(required=false) String phone
+        ){
         User user = new User();
         user.setUsername(username);
         user.setPassword(password);
+        user.setName(name);
+        user.setSurname(surname);
+        user.setFaculty(faculty);
+        user.setEmail(email);
+        user.setPhone(phone);
         User userFromDb = userRepository.findByUsername(user.getUsername());
         if(userFromDb!=null){
-            return "User by this username exists!";
+            return "user by this username exists!";
         }
-
         user.setActive(true);
         user.setRoles(Collections.singleton(Role.USER));
         userRepository.save(user);
-        return "Succesfully registrated";
+        return "successfully registered";
+    }
+
+    @PostMapping("/api/login")
+    public String login(
+            @RequestParam String username,
+            @RequestParam String password
+    ){
+        User userFromDb = userRepository.findByUsername(username);
+        if(userFromDb == null){
+            return "invalid username";
+        }
+        if(!userFromDb.getPassword().equals(password)){
+            return "invalid password";
+        }
+        userFromDb.setActive(true);
+        userRepository.save(userFromDb);
+        return "valid user";
     }
 }

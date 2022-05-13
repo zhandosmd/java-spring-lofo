@@ -27,34 +27,22 @@ public class BlogRestController {
     }
 
     @PostMapping("/api/blog/add")
-    public String blogPostAdd(
-            @RequestParam("title") String title,
-            @RequestParam("place") String place,
-            @RequestParam("description") String description) {
-        Post post = new Post(title, place, description);
-        postRepository.save(post);
-
-        return "succesfully added";
-    }
-
-    @PostMapping("/api/blog/add/withimage")
-    public String saveUser(
-            @RequestParam String title,
-            @RequestParam String anons,
-            @RequestParam String full_text,
-            @RequestParam String type,
-            @RequestParam("image") MultipartFile multipartFile
+    public String savePost(
+        @RequestParam String title,
+        @RequestParam(required = false) String place,
+        @RequestParam(required = false) String description,
+        @RequestParam(required = false) String type,
+        @RequestParam(required = false) MultipartFile image
     ) throws IOException {
-        Post post = new Post(title, anons, full_text, type);
+        Post post = new Post(title, place, description, type);
 
-        String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+        String fileName = StringUtils.cleanPath(image.getOriginalFilename());
         post.setPhotos(fileName);
 
         Post savedPost = postRepository.save(post);
         String uploadDir = "user-photos/" + savedPost.getId();
-        FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-
-        return "succesfully added";
+        FileUploadUtil.saveFile(uploadDir, fileName, image);
+        return "successfully added";
     }
     
     @GetMapping("/api/blog/{id}")
@@ -68,39 +56,30 @@ public class BlogRestController {
         return res.get(0);
     }
 
-    @GetMapping("/api/blog/{id}/edit")
-    public String blogEdit(@PathVariable(value = "id") long id, Model model){
-        if(!postRepository.existsById(id)){
-            return "redirect:/blog";
-        }
-        Optional<Post> post = postRepository.findById(id);
-        ArrayList<Post> res = new ArrayList<>();
-        post.ifPresent(res::add);
-        model.addAttribute("post", res);
-        return "blog-edit";
-    }
-
     @PutMapping("/api/blog/{id}/edit")
     public String blogPostUpdate(
             @PathVariable(value = "id") long id,
-            @RequestParam String title,
-            @RequestParam String place,
-            @RequestParam String description)
-    {
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String place,
+            @RequestParam(required = false) String description,
+            @RequestParam(required = false) String type
+    ) {
         Post post = postRepository.findById(id).orElseThrow();
-        post.setTitle(title);
-        post.setPlace(place);
-        post.setDescription(description);
+        if(!title.isEmpty()) post.setTitle(title);
+        if(!place.isEmpty()) post.setPlace(place);
+        if(!description.isEmpty()) post.setDescription(description);
+        if(!type.isEmpty()) post.setType(type);
+
         postRepository.save(post);
 
-        return "successully edited";
+        return "successfully edited";
     }
 
     @DeleteMapping("/api/blog/{id}/remove")
     public String blogPostDelete(@PathVariable(value = "id") long id, Model model){
         Post post = postRepository.findById(id).orElseThrow();
         postRepository.delete(post);
-        return "successully deleted post number " + id;
+        return "successfully deleted post number " + id;
     }
 }
 

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<script>
+    function changeType(value){
+        location.href = "http://localhost:8080/allnews?type="+value;
+    }
+</script>
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Все новости</title>
+    <link rel="stylesheet" href="/bootstrap-4.3.1-dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/allnews.css">
+</head>
+<body>
+        <header th:insert="blocks/header2 :: header2"></header>
+
+        <section class="allnews">
+            <div class="container">
+                <h6 class="allnews-section-title">MAIN / LOFO POSTS</h6>
+                <h4>Lost & Found Posts</h4>
+<!--                <div class="allnews-search">-->
+<!--                    <input class="search-input" type="text" placeholder="search...">-->
+<!--                    <svg class="search" width="18" height="18" viewBox="0 0 23 23" fill="none" xmlns="http://www.w3.org/2000/svg">-->
+<!--                        <path d="M22 22L17.065 17.065M17.0707 3.7573C20.7471 7.43369 20.7471 13.3943 17.0707 17.0707C13.3943 20.7471 7.43369 20.7471 3.7573 17.0707C0.080901 13.3943 0.080901 7.43369 3.7573 3.7573C7.43369 0.080901 13.3943 0.080901 17.0707 3.7573Z" stroke="#C4C4C4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>-->
+<!--                    </svg>  -->
+<!--                </div><br>-->
+
+                <select class="allnews-search" name="type" id="type" onchange="changeType(this.value)">
+                    <option th:each="option : ${types}" th:value="${option}" th:text="${option}" th:selected="${selectedType==option}"></option>
+                </select><br>
+
+                <div class="row">
+                    <div th:each="el : ${posts}" class="col-lg-10">
+                        <a href="" class="news-card">
+                            <div class="card-img">
+<!--                                <img src="/img/image 2.png" alt="">-->
+<!--                                <img th:src="${el.getPhotosImagePath}" width="500" />-->
+                                <img th:src="${el.getPhotosImagePath}" alt=""/>
+                            </div>
+                            <div class="card-text">
+                                <h6 th:text="${el.title}" class="cardheader"></h6>
+                                <p th:text="${el.description}" class="card-short-description"></p>
+                                <p class="news-date"><span class="time">13:44</span>, <span class="date">22.02.2022</span></p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                <div class="show-more">
+                    <button class="btn-more">Show more</button>
+                </div>
+            </div>
+            
+        </section>
+
+        <footer th:insert="blocks/footer2 :: footer2"></footer>
+
+        <script src="/js/main.js"></script>
+</body>
+</html>

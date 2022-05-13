@@ -18,17 +18,9 @@
     <h1>Lost & Found Records</h1>
 
     <select name="type" id="type" onchange="changeType(this.value)">
-<!--        <option value="All">All</option>-->
-<!--        <option value="Gadget">Gadget</option>-->
-<!--        <option value="Document">Document</option>-->
-<!--        <option value="Clothes">Clothes</option>-->
-<!--        <option value="ID Card">ID Card</option>-->
-<!--        <option value="Credit Card">Credit Card</option>-->
-<!--        <option th:each="option : ${types}" th:value="${option}" th:text="${option}" th:selected="${${selectedType}==option}"></option>-->
 
-        <option th:each="option : ${types}" th:value="${option}" th:text="${option}" th:selected="${selectedType==option}"></option>
+    <option th:each="option : ${types}" th:value="${option}" th:text="${option}" th:selected="${selectedType==option}"></option>
     </select><br>
-<!--    <a th:href="'/blog/'" class="btn btn-warning">Search</a>-->
 
     <div th:each="el : ${posts}" class="alert alert-info mt-2">
         <h3 th:text="${el.title}"></h3>
